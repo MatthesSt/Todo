@@ -111,7 +111,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import * as API from "../API";
-import type { todo, finishedTodo } from "../API";
+import type { todo } from "../API";
 
 export default defineComponent({
   data() {
