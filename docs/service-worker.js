@@ -11,16 +11,16 @@
  * See https://goo.gl/2aRDsh
  */
 
+importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+
 importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js"
+  "/Todo/precache-manifest.4540cdd209c9d4e8811481b43e22b780.js"
 );
 
-importScripts("/Todo/precache-manifest.d7a1adc64a39bc05f98f56d7971ebb24.js");
+workbox.core.setCacheNameDetails({prefix: "todo"});
 
-workbox.core.setCacheNameDetails({ prefix: "todo" });
-
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
 });

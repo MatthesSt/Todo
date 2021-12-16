@@ -153,13 +153,13 @@ export default defineComponent({
       this.todos.push(newTodo);
       this.clear();
     },
-    changeTaskState(id: number) {
+    async changeTaskState(id: number) {
       console.log({ changeTaskState: id });
       let index = this.todos.findIndex((t) => t.id == id);
       console.log({ indexStateChange: index });
       if (this.todos[index].done == false) {
         try {
-          if (API.updateTodo(id, true)) {
+          if (await API.updateTodo(id, true)) {
             this.todos[index].done = true;
           }
         } catch (e) {
@@ -167,7 +167,7 @@ export default defineComponent({
         }
       } else {
         try {
-          if (API.updateTodo(id, false)) {
+          if (await API.updateTodo(id, false)) {
             this.todos[index].done = false;
           }
         } catch (e) {
