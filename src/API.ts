@@ -26,11 +26,22 @@ export async function addTodo(todo: todo): Promise<void> {
   const docRef = await addDoc(collection(getFirestore(), "todos"), todo);
   localStorage.setItem("todos", JSON.stringify(todos));
 }
-export function getTodos(): todo[] {
+export async function getTodos(): Promise<todo[]> {
+  const docs = [] as any[];
+  const querySnapshot = await getDocs(collection(getFirestore(), "todos"));
+  querySnapshot.forEach((doc) => {
+    docs.push(doc);
+  });
   const todos = JSON.parse(localStorage.getItem("todos") || "[]") as todo[];
-  return todos;
+  if (docs.map((task) => ({ ...task.data(), id: task.id })))
+    return docs.map((task) => ({ ...task.data(), id: task.id }));
+  else return todos;
 }
-export function updateTodo(id: number, taskDone: boolean): boolean {
+export async function updateTodo(
+  id: number,
+  taskDone: boolean
+): Promise<boolean> {
+  // const docRef = await updateDoc(collection(getFirestore(), "todos"), todo);
   const todos = JSON.parse(localStorage.getItem("todos") || "[]") as todo[];
   todos.find((t) => t.id == id)!.done = taskDone;
   localStorage.setItem("todos", JSON.stringify(todos));

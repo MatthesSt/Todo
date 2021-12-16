@@ -122,8 +122,12 @@ export default defineComponent({
       todos: [] as todo[],
     };
   },
-  mounted() {
-    this.todos = API.getTodos();
+  async mounted() {
+    try {
+      this.todos = await API.getTodos();
+    } catch (e) {
+      console.log({ error: e });
+    }
   },
   methods: {
     clear() {

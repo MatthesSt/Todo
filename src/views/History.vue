@@ -36,8 +36,8 @@ export default defineComponent({
       finishedTodos: [] as finishedTodo[],
     };
   },
-  mounted() {
-    this.todos = API.getTodos();
+  async mounted() {
+    this.todos = await API.getTodos();
   },
 
   methods: {
