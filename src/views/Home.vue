@@ -40,7 +40,7 @@
             <div class="col-6">
               <h2>Todo</h2>
               <div
-                v-for="todo in todos"
+                v-for="todo in merged"
                 :key="todo.id"
                 class="d-flex flex-column text-start"
               >
@@ -65,7 +65,7 @@
               <h2>Done</h2>
               <div
                 class="d-flex flex-column text-start"
-                v-for="todo in todos"
+                v-for="todo in merged"
                 :key="todo.id"
               >
                 <div v-if="todo.done == true">
@@ -120,13 +120,18 @@ export default defineComponent({
       timelimit: "",
       task: "",
       todos: [] as todo[],
+      conflicts: [] as todo[],
+      merged: [] as todo[],
     };
   },
   async mounted() {
     try {
-      this.todos = await API.getTodos();
+      this.conflicts = (await API.getTodos()).conflicts;
+      this.merged = (await API.getTodos()).merged;
+
+      console.log({ conflicts: this.conflicts, merged: this.merged });
     } catch (e) {
-      console.log({ error: e });
+      console.log({ error_mountedHome: e });
     }
   },
   methods: {
@@ -155,7 +160,7 @@ export default defineComponent({
     },
     async changeTaskState(id: number) {
       console.log({ changeTaskState: id });
-      let index = this.todos.findIndex((t) => t.id == id);
+      let index = this.merged.findIndex((t) => t.id == id);
       console.log({ indexStateChange: index });
       if (this.todos[index].done == false) {
         try {
@@ -163,7 +168,7 @@ export default defineComponent({
             this.todos[index].done = true;
           }
         } catch (e) {
-          console.log({ error: e });
+          console.log({ error_changeTaskState: e });
         }
       } else {
         try {
@@ -171,7 +176,7 @@ export default defineComponent({
             this.todos[index].done = false;
           }
         } catch (e) {
-          console.log({ error: e });
+          console.log({ error_updateTodo: e });
         }
       }
     },
@@ -183,7 +188,7 @@ export default defineComponent({
           console.log({ id: id });
         }
       } catch (e) {
-        console.log({ error: e });
+        console.log({ error_deleteTask: e });
       }
     },
   },

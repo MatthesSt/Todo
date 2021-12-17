@@ -1,0 +1,10 @@
+load Fb and Ls->
+check Ls for any custom id's(length < 10) -> need to get Fb id's
+fetch Fb
+check Fb state with Ls tasks that already got Fb id's
+-> mark all tasks with conflicts
+create new task list with {
+-> Fb tasks without conflicts
+-> Ls tasks with custom id's after getting Firebase id's for them
+-> all tasks with conflicts
+}

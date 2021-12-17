@@ -34,10 +34,13 @@ export default defineComponent({
     return {
       todos: [] as todo[],
       finishedTodos: [] as finishedTodo[],
+      conflicts: [] as todo[],
+      merged: [] as todo[],
     };
   },
   async mounted() {
-    this.todos = await API.getTodos();
+    this.conflicts = await (await API.getTodos()).conflicts;
+    this.merged = await (await API.getTodos()).merged;
   },
 
   methods: {
@@ -45,7 +48,7 @@ export default defineComponent({
       try {
         API.removeTask(id);
       } catch (e) {
-        console.error({ error: e });
+        console.error({ error_deleteTask: e });
       }
     },
   },
